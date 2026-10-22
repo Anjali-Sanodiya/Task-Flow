@@ -1,0 +1,360 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#111827" />
+    <title>TaskFlow — Personal Productivity</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" id="sidebar">
+        <a class="brand" href="#" aria-label="TaskFlow home">
+          <span class="brand-mark">✓</span
+          ><span>taskflow<span class="brand-dot">.</span></span>
+        </a>
+        <div class="workspace-label">WORKSPACE</div>
+        <nav class="main-nav" aria-label="Main navigation">
+          <button class="nav-item active" data-view="overview">
+            <span class="nav-icon">▦</span> Overview
+          </button>
+          <button class="nav-item" data-view="board">
+            <span class="nav-icon">▤</span> My Tasks
+            <span class="nav-count" id="navTaskCount">0</span>
+          </button>
+          <button class="nav-item" data-view="today">
+            <span class="nav-icon">◷</span> Due Today
+          </button>
+          <button class="nav-item" data-view="upcoming">
+            <span class="nav-icon">▣</span> Upcoming
+          </button>
+        </nav>
+        <div class="sidebar-section">
+          <div class="workspace-label">FILTER BY STATUS</div>
+          <button class="side-filter" data-status="all">
+            <i class="status-dot all-dot"></i> All tasks
+          </button>
+          <button class="side-filter" data-status="todo">
+            <i class="status-dot todo-dot"></i> To do
+          </button>
+          <button class="side-filter" data-status="progress">
+            <i class="status-dot progress-dot"></i> In progress
+          </button>
+          <button class="side-filter" data-status="done">
+            <i class="status-dot done-dot"></i> Completed
+          </button>
+        </div>
+        <div class="sidebar-bottom">
+          <div class="tip-card">
+            <div class="tip-icon">✦</div>
+            <strong>Small steps, big wins.</strong>
+            <p>Stay focused. Your future self will thank you.</p>
+          </div>
+          <button class="nav-item theme-toggle" id="themeToggle">
+            <span class="nav-icon" id="themeIcon">☾</span> Switch appearance
+          </button>
+          <div class="profile">
+            <div class="avatar">TF</div>
+            <div>
+              <strong>My Workspace</strong><small>Personal account</small>
+            </div>
+            <span class="profile-menu">•••</span>
+          </div>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <header class="topbar">
+          <button class="mobile-menu" id="mobileMenu" aria-label="Toggle menu">
+            ☰
+          </button>
+          <div class="breadcrumb">
+            Workspace <span>/</span>
+            <strong id="breadcrumbTitle">Overview</strong>
+          </div>
+          <div class="top-actions">
+            <label class="search-box"
+              ><span>⌕</span
+              ><input
+                id="searchInput"
+                type="search"
+                placeholder="Search tasks..."
+                aria-label="Search tasks"
+              /><kbd>⌘ K</kbd></label
+            >
+            <button
+              class="icon-button"
+              id="topThemeToggle"
+              aria-label="Toggle theme"
+            >
+              ◐
+            </button>
+            <button class="primary-button" id="addTaskTop">
+              <span>＋</span> New task
+            </button>
+          </div>
+        </header>
+
+        <section class="page-wrap">
+          <div class="page-heading">
+            <div>
+              <div class="eyebrow" id="todayLabel">YOUR PRODUCTIVITY SPACE</div>
+              <h1 id="pageTitle">Good day. Let's get things done.</h1>
+              <p id="pageSubtitle">
+                A little progress each day adds up to big results.
+              </p>
+            </div>
+            <div class="date-pill">
+              <span>▦</span><span id="currentDate"></span>
+            </div>
+          </div>
+
+          <section class="stats-grid" aria-label="Task statistics">
+            <article class="stat-card">
+              <div class="stat-top">
+                <span>Total tasks</span><span class="stat-icon purple">▤</span>
+              </div>
+              <div class="stat-number" id="totalStat">0</div>
+              <div class="stat-foot">
+                <span class="mini-line purple-line">↗</span> All your tasks in
+                one place
+              </div>
+            </article>
+            <article class="stat-card">
+              <div class="stat-top">
+                <span>In progress</span><span class="stat-icon blue">◷</span>
+              </div>
+              <div class="stat-number" id="progressStat">0</div>
+              <div class="stat-foot">
+                <span class="mini-line blue-line">●</span> Keep the momentum
+                going
+              </div>
+            </article>
+            <article class="stat-card">
+              <div class="stat-top">
+                <span>Completed</span><span class="stat-icon green">✓</span>
+              </div>
+              <div class="stat-number" id="doneStat">0</div>
+              <div class="stat-foot">
+                <span class="mini-line green-line">↗</span> Every win counts
+              </div>
+            </article>
+            <article class="stat-card">
+              <div class="stat-top">
+                <span>Overdue</span><span class="stat-icon orange">!</span>
+              </div>
+              <div class="stat-number" id="overdueStat">0</div>
+              <div class="stat-foot">
+                <span class="mini-line orange-line">◷</span> Tasks past their
+                deadline
+              </div>
+            </article>
+          </section>
+
+          <section class="progress-panel">
+            <div class="progress-copy">
+              <div>
+                <span class="panel-kicker">YOUR DAILY PROGRESS</span>
+                <h2>You're making progress <span class="sparkle">✦</span></h2>
+              </div>
+              <p id="progressCaption">Complete a task to start your streak.</p>
+            </div>
+            <div class="progress-track">
+              <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="progress-bottom">
+              <span id="progressLabel">0% completed</span
+              ><span id="progressFraction">0 of 0 tasks</span>
+            </div>
+          </section>
+
+          <section class="board-section" id="boardSection">
+            <div class="section-heading">
+              <div>
+                <h2 id="listHeading">Task board</h2>
+                <p id="listDescription">
+                  Organize your priorities and keep moving forward.
+                </p>
+              </div>
+              <div class="board-controls">
+                <select id="sortSelect" aria-label="Sort tasks">
+                  <option value="created">Recently added</option>
+                  <option value="due">Due date</option>
+                  <option value="priority">Priority</option>
+                  <option value="title">Alphabetical</option></select
+                ><button
+                  class="view-toggle active"
+                  id="listViewBtn"
+                  aria-label="List view"
+                >
+                  ☷</button
+                ><button
+                  class="view-toggle"
+                  id="boardViewBtn"
+                  aria-label="Board view"
+                >
+                  ▦
+                </button>
+              </div>
+            </div>
+            <div class="task-list-view" id="taskListView">
+              <div class="list-header">
+                <span>Task name</span><span>Priority</span><span>Due date</span
+                ><span>Status</span><span></span>
+              </div>
+              <div id="taskRows"></div>
+              <div class="empty-state" id="emptyState">
+                <div class="empty-illustration">✓</div>
+                <h3>Nothing on your plate</h3>
+                <p>Add a task and make today count.</p>
+                <button class="primary-button" id="emptyAdd">
+                  ＋ Create your first task
+                </button>
+              </div>
+            </div>
+            <div class="kanban hidden" id="kanbanView">
+              <div class="kanban-column">
+                <div class="kanban-title">
+                  <span class="column-dot todo-dot"></span> To do
+                  <span id="todoCount">0</span>
+                </div>
+                <div
+                  class="kanban-cards"
+                  id="todoCards"
+                  data-drop-status="todo"
+                ></div>
+                <button class="kanban-add" data-add-status="todo">
+                  ＋ Add task
+                </button>
+              </div>
+              <div class="kanban-column">
+                <div class="kanban-title">
+                  <span class="column-dot progress-dot"></span> In progress
+                  <span id="doingCount">0</span>
+                </div>
+                <div
+                  class="kanban-cards"
+                  id="doingCards"
+                  data-drop-status="progress"
+                ></div>
+                <button class="kanban-add" data-add-status="progress">
+                  ＋ Add task
+                </button>
+              </div>
+              <div class="kanban-column">
+                <div class="kanban-title">
+                  <span class="column-dot done-dot"></span> Completed
+                  <span id="doneCount">0</span>
+                </div>
+                <div
+                  class="kanban-cards"
+                  id="doneCards"
+                  data-drop-status="done"
+                ></div>
+                <button class="kanban-add" data-add-status="done">
+                  ＋ Add task
+                </button>
+              </div>
+            </div>
+          </section>
+          <footer class="app-footer">
+            <span
+              >Made for focused work <span class="footer-heart">♥</span></span
+            ><span>TaskFlow · Your work, in flow.</span>
+          </footer>
+        </section>
+      </main>
+    </div>
+
+    <div
+      class="modal-backdrop hidden"
+      id="taskModal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modalTitle"
+    >
+      <form class="task-modal" id="taskForm">
+        <div class="modal-header">
+          <div>
+            <span class="modal-kicker">TASK DETAILS</span>
+            <h2 id="modalTitle">Create a new task</h2>
+          </div>
+          <button
+            type="button"
+            class="modal-close"
+            id="closeModal"
+            aria-label="Close"
+          >
+            ×
+          </button>
+        </div>
+        <label class="field-label" for="taskTitle"
+          >Task name <span>*</span></label
+        >
+        <input
+          class="field-input"
+          id="taskTitle"
+          name="title"
+          placeholder="e.g. Prepare project presentation"
+          maxlength="120"
+          required
+        />
+        <label class="field-label" for="taskDescription"
+          >Description <small>Optional</small></label
+        >
+        <textarea
+          class="field-input textarea"
+          id="taskDescription"
+          name="description"
+          placeholder="Add a few details..."
+          rows="3"
+          maxlength="500"
+        ></textarea>
+        <div class="form-row">
+          <div>
+            <label class="field-label" for="taskPriority">Priority</label
+            ><select class="field-input" id="taskPriority">
+              <option value="low">Low</option>
+              <option value="medium" selected>Medium</option>
+              <option value="high">High</option>
+            </select>
+          </div>
+          <div>
+            <label class="field-label" for="taskStatus">Status</label
+            ><select class="field-input" id="taskStatus">
+              <option value="todo">To do</option>
+              <option value="progress">In progress</option>
+              <option value="done">Completed</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div>
+            <label class="field-label" for="taskDue">Due date</label
+            ><input class="field-input" id="taskDue" type="date" />
+          </div>
+          <div>
+            <label class="field-label" for="taskCategory">Category</label
+            ><select class="field-input" id="taskCategory">
+              <option>Work</option>
+              <option>Personal</option>
+              <option>Study</option>
+              <option>Health</option>
+              <option>Other</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="secondary-button" id="cancelModal">
+            Cancel</button
+          ><button type="submit" class="primary-button" id="saveTaskBtn">
+            Create task <span>→</span>
+          </button>
+        </div>
+      </form>
+    </div>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="script.js"></script>
+  </body>
+</html>
